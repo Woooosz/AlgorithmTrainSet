@@ -83,14 +83,14 @@ int main() {
 		per[i]=0;
 	}
 	collected[S]=1; per[S]=person[S];
-	dist[i]=0;
+	dist[S]=0;
 	int tmp;
 	while(true) {
 		tmp=findMinDist(dist,collected,nv);
 		if(tmp==-1) break;
 		collected[tmp]=1;
 		for(int i=0;i<nv;++i) {
-			if(collected[i]==-1) {
+			if(collected[i]==-1 && graph[tmp][i]<INFINTY) {
 				if(dist[tmp]+graph[tmp][i]<dist[i]) {
 					dist[tmp]+graph[tmp][i]=dist[i];
 					per[i]=per[tmp]+person[i];
