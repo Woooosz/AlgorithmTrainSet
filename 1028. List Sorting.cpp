@@ -52,6 +52,10 @@ Sample Output 3
 000007 James 85
 000002 James 90
 000010 Amy 90
+PS:
+	1.用cout/cin最后一个测试点会超时，要换成printf和scanf
+	2.string和scanf、printf之间的兼容性不大好，要用字符数组来解决
+	3.字符串比较要用strcmp函数，如果只是简单用a>b比较第二个测试点会不通过
 */
 #include<stdio.h>
 #include<vector>
