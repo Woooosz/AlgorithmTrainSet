@@ -26,6 +26,7 @@ Sample Input
 2 2 1.5 1 0.5
 Sample Output
 3 2 1.5 1 2.9 0 3.2
+如果系数为零，就不用压入结果数组中。
 */
 #include<stdio.h>
 #include<algorithm>
