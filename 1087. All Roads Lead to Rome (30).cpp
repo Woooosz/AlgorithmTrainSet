@@ -2,7 +2,7 @@
 #include<vector>
 #include<map>
 #include<algorithm>
-uisng namespace std;
+using namespace std;
 const int max=1000;
 const int inf=0x7fffffff;
 vector<int> tmpath,path;
@@ -50,7 +50,7 @@ void dijkstra() {
     }
 }
 void dfs(int v) {
-    freopen("/Users/shizhewu/Desktop/proj/proj/i.txt","r",stdin);
+    //freopen("/Users/shizhewu/Desktop/proj/proj/i.txt","r",stdin);
     if(v==s) {
         tmpath.push_back(v);
         int thishappy=0,avghappy=0;
