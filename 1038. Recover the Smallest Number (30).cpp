@@ -36,5 +36,4 @@ int main() {
         ss=ss.substr(1,-1);
     if(ss.empty()) ss="0";
     cout<<ss<<endl;
-
 }
