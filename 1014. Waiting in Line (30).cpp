@@ -1,75 +1,61 @@
-//    freopen("/Users/shizhewu/Desktop/proj/proj/i.txt","r",stdin);
-#include<iostream>
-#include<queue>
-#include<vector>
+#include <iostream>
+#include <queue>
+#include <vector>
 using namespace std;
-int find_min_window(vector<int> &window) {
-    int index=-1;
-    int min=0x7ffff;
-    for(int i=0;i<window.size();++i) {
-        if(window[i]<min) {
-            min=window[i];
-            index=i;
-        }
-    }
-    return index;
-}
-int find_min_size(vector<queue<int>> q) {
-    int index=-1;
-    int min=0x7ffff;
-    for(int i=0;i<q.size();++i) {
-        if(q[i].size()<min) {
-            min=q[i].size();
-            index=i;
-        }
-    }
-    return index;
-}
+struct node {
+    int poptime, endtime;
+    queue<int> q;
+};
 int main() {
-    freopen("/Users/shizhewu/Desktop/proj/proj/i.txt","r",stdin);
-    int n,m,k,qnum;
-    scanf("%d %d %d %d",&n,&m,&k,&qnum);
-    vector<int> prog(k+1),quer(qnum+1),ans(k+1);
-    for(int i=1;i<=k;++i)
-        scanf("%d",&prog[i]);
-    for(int i=1;i<=qnum;++i)
-        scanf("%d",&quer[i]);
-    vector<int> window(m);
-    vector<queue<int>> q(m);
-    for(int i=1;i<=n*m;++i) {
-        int a=find_min_size(q);
-        q[a].push(i);
+    int n, m, k, q, index = 1;
+    scanf("%d%d%d%d", &n, &m, &k, &q);
+    vector<int> time(k + 1), result(k + 1);
+    for(int i = 1; i <= k; i++) {
+        scanf("%d", &time[i]);
     }
-    int index=n*m+1;
-    for(int i=index;i<=k;) {
-        for(int j=0;j<q.size();++j) {
-            if(!q[j].empty()) {
-                int cnum=q[j].front();
-                q[j].pop();
-                window[j]+=prog[cnum];
-                ans[cnum]=window[j];
-                int a=find_min_window(window);
-                q[a].push(i++);
+    vector<node> window(n + 1);
+    vector<bool> sorry(k + 1, false);
+    for(int i = 1; i <= m; i++) {
+        for(int j = 1; j <= n; j++) {
+            if(index <= k) {
+                window[j].q.push(time[index]);
+                if(window[j].endtime >= 540)
+                    sorry[index] = true;
+                window[j].endtime += time[index];
+                if(i == 1)
+                    window[j].poptime = window[j].endtime;
+                result[index] = window[j].endtime;
+                index++;
+            }
+            
+        }
+    }
+    while(index <= k) {
+        int tempmin = window[1].poptime, tempwindow = 1;
+        for(int i = 2; i <= n; i++) {
+            if(window[i].poptime < tempmin) {
+                tempwindow = i;
+                tempmin = window[i].poptime;
             }
         }
-
+        window[tempwindow].q.pop();
+        window[tempwindow].q.push(tempmin);
+        window[tempwindow].poptime +=  window[tempwindow].q.front();
+        if(window[tempwindow].endtime >= 540)
+            sorry[index] = true;
+        window[tempwindow].endtime += time[index];
+        result[index] = window[tempwindow].endtime;
+        index++;
     }
-    for(int i=0;i<q.size();++i) {
-        while(!q[i].empty()) {
-            int cnum=q[i].front();
-            q[i].pop();
-            window[i]+=prog[cnum];
-            ans[cnum]=window[i];
+    for(int i = 1; i <= q; i++) {
+        int query, minute;
+        scanf("%d", &query);
+        minute = result[query];
+        if(sorry[query] == true) {
+            printf("Sorry\n");
+        } else {
+            printf("%02d:%02d\n",(minute + 480) / 60, (minute + 480) % 60);
         }
     }
-    for(int i=1;i<=qnum;++i) {
-        int hour=8;
-        int min=ans[quer[i]];
-        hour+=(min/60);
-        min%=60;
-        if(hour==17 && min>0)
-            printf("Sorry\n");
-        else
-            printf("%02d:%02d\n",hour,min);
-    }
+    return 0;
 }
